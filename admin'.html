@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin - Car Rental</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background: #f0f0f5;
+        }
+        .header {
+            background: #007bff;
+            color: white;
+            text-align: center;
+            padding: 30px 0;
+            font-size: 40px;
+            font-weight: bold;
+        }
+        .container {
+            width: 90%;
+            max-width: 1200px;
+            margin: auto;
+            padding: 20px;
+            background: white;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            border-radius: 10px;
+        }
+        .car-list {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 20px;
+            margin-top: 20px;
+        }
+        .car {
+            background: white;
+            padding: 15px;
+            border-radius: 10px;
+            box-shadow: 0 0 5px rgba(0, 0, 0, 0.2);
+            text-align: center;
+            position: relative;
+            border: 2px solid #007bff;
+        }
+        .car img {
+            max-width: 100%;
+            height: 140px;
+            object-fit: contain;
+            display: block;
+            margin: 10px auto;
+        }
+        .delete-button {
+            position: absolute;
+            top: 5px;
+            right: 5px;
+            background: red;
+            color: white;
+            border: none;
+            padding: 5px 10px;
+            cursor: pointer;
+            border-radius: 5px;
+        }
+        textarea {
+            width: 100%;
+            height: 100px;
+            resize: none;
+            border: 1px solid #ccc;
+            padding: 5px;
+            white-space: pre-wrap;
+            font-size: 14px;
+        }
+        button {
+            margin-top: 10px;
+            padding: 8px 15px;
+            background: #28a745;
+            color: white;
+            border: none;
+            cursor: pointer;
+            border-radius: 5px;
+        }
+        .footer {
+            text-align: center;
+            padding: 10px;
+            background: #007bff;
+            color: white;
+            margin-top: 20px;
+        }
+        input {
+            border: none;
+            padding: 5px;
+            font-size: 16px;
+            width: 200px;
+        }
+    </style>
+</head>
+<body>
+    <div class="header">Admin - Manage Cars</div>
+    <div class="container">
+        <div class="car-list" id="carList"></div>
+        <button onclick="addCar()">Add New Car</button>
+    </div>
+    <div class="footer">
+        <p>Contact: <input type="text" id="contact" value="+66 0975781139" oninput="updateContact()">
+        | Address: <input type="text" id="address" value="Bangkok, Thailand" oninput="updateContact()"></p>
+    </div>
+    
+    <script>
+        let carsData = JSON.parse(localStorage.getItem("carsData")) || [];
+        let contactInfo = localStorage.getItem("contactInfo") || "+66 0975781139";
+        let addressInfo = localStorage.getItem("addressInfo") || "Bangkok, Thailand";
+
+        document.getElementById("contact").value = contactInfo;
+        document.getElementById("address").value = addressInfo;
+
+        function addCar() {
+            carsData.push({ image: "", text: "New Car Details Here" });
+            saveData();
+            renderCars();
+        }
+        
+        function deleteCar(index) {
+            carsData.splice(index, 1);
+            saveData();
+            renderCars();
+        }
+        
+        function updateImage(event, index) {
+            let file = event.target.files[0];
+            if (file) {
+                let reader = new FileReader();
+                reader.onload = function(e) {
+                    carsData[index].image = e.target.result;
+                    saveData();
+                    renderCars();
+                }
+                reader.readAsDataURL(file);
+            }
+        }
+        
+        function updateText(event, index) {
+            carsData[index].text = event.target.value;
+            saveData();
+        }
+
+        function updateContact() {
+            let contact = document.getElementById("contact").value;
+            let address = document.getElementById("address").value;
+            localStorage.setItem("contactInfo", contact);
+            localStorage.setItem("addressInfo", address);
+        }
+        
+        function saveData() {
+            localStorage.setItem("carsData", JSON.stringify(carsData));
+        }
+        
+        function renderCars() {
+            let carList = document.getElementById("carList");
+            carList.innerHTML = "";
+            carsData.forEach((car, index) => {
+                let newCar = document.createElement("div");
+                newCar.classList.add("car");
+                newCar.innerHTML = `
+                    <button class="delete-button" onclick="deleteCar(${index})">X</button>
+                    <img src="${car.image}" alt="Car Image">
+                    <label>Upload Image: <input type="file" onchange="updateImage(event, ${index})"></label>
+                    <textarea oninput="updateText(event, ${index})">${car.text}</textarea>
+                `;
+                carList.appendChild(newCar);
+            });
+        }
+        
+        renderCars();
+    </script>
+</body>
+</html>
