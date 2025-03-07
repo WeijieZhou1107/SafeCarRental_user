@@ -5,85 +5,60 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Safe Car Rental</title>
     <style>
-        body {
-            font-family: Arial, sans-serif;
+        * {
             margin: 0;
             padding: 0;
-            background: #f8f9fa;
+            box-sizing: border-box;
         }
-        .container {
-            width: 90%;
-            max-width: 1200px;
-            margin: auto;
-            padding: 20px;
-            background: white;
-            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-            border-radius: 10px;
+        body {
+            font-family: Arial, sans-serif;
+            background: #f8f9fa;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            height: 100vh;
+            overflow-y: auto;
         }
         .header {
+            width: 100%;
+            height: 33vh;
             background: #007bff;
             color: white;
-            text-align: center;
-            padding: 15px 0;
-            font-size: 24px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 2.5em;
             font-weight: bold;
         }
-        .car-list {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-            gap: 20px;
-            margin-top: 20px;
-        }
-        .car {
-            background: white;
-            padding: 15px;
-            border-radius: 10px;
-            box-shadow: 0 0 5px rgba(0, 0, 0, 0.2);
-            text-align: center;
-            border: 2px solid #007bff;
-        }
-        .car img {
-            max-width: 100%;
-            height: 140px;
-            object-fit: contain;
-            display: block;
-            margin: 10px auto;
+        .content {
+            width: 90%;
+            max-width: 1200px;
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
         }
         .footer {
-            text-align: center;
-            padding: 10px;
+            width: 100%;
             background: #007bff;
             color: white;
-            margin-top: 20px;
+            text-align: center;
+            padding: 15px;
+            font-size: 1.2em;
+            position: relative;
         }
     </style>
 </head>
 <body>
     <div class="header">Safe Car Rental</div>
-    <div class="container">
+    
+    <div class="content">
         <h2>Available Cars</h2>
-        <div class="car-list" id="carList"></div>
-    </div>
-    <div class="footer">
-        <p>Contact: +66 0975781139 | Address: Bangkok, Thailand</p>
+        <!-- 这里可以插入车辆列表 -->
     </div>
     
-    <script>
-        function renderCars() {
-            let carsData = JSON.parse(localStorage.getItem("carsData")) || [];
-            let carList = document.getElementById("carList");
-            carList.innerHTML = "";
-            carsData.forEach((car) => {
-                let newCar = document.createElement("div");
-                newCar.classList.add("car");
-                newCar.innerHTML = `
-                    <img src="${car.image}" alt="Car Image">
-                    <p>${car.text}</p>
-                `;
-                carList.appendChild(newCar);
-            });
-        }
-        renderCars();
-    </script>
+    <div class="footer">
+        Contact: +66 0937851189 | Address: 888 Ratchadaphisek Rd. Din Daeng, Bangkok 10400 Thailand
+    </div>
 </body>
 </html>
